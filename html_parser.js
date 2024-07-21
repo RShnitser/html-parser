@@ -11,6 +11,29 @@ function Token(type, value) {
   this.value = value;
 }
 
+function Lexer(input) {
+  this.input = input;
+  this.current = 0;
+  this.next = 0;
+  this.char = "";
+}
+
+function readChar(lexer) {
+  if (lexer.next >= lexer.input.length) {
+    lexer.char = 0;
+  } else {
+    lexer.char = lexer.iput[lexer.next];
+  }
+  lexer.current = lexer.next;
+  lexer.next++;
+}
+
+function createLexer(input) {
+  const lexer = Lexer(input);
+  readChar(lexer);
+  return lexer;
+}
+
 async function fetchUrlText(url) {
   try {
     const response = await fetch(url);
