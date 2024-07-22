@@ -28,10 +28,31 @@ function readChar(lexer) {
   lexer.next++;
 }
 
+function peekChar(lexer) {
+  if (lexer.next >= lexer.input.length) {
+    return 0;
+  }
+  return lexer.input[lexer.next];
+}
+
 function createLexer(input) {
   const lexer = Lexer(input);
   readChar(lexer);
   return lexer;
+}
+
+function nextToken(lexer) {
+  const tok = Token(0, 0);
+  switch (lexer.char) {
+    case "<":
+      break;
+    case "/":
+      break;
+    case 0:
+      tok.type = TokenType.END;
+      break;
+  }
+  return tok;
 }
 
 async function fetchUrlText(url) {
