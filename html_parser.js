@@ -2,8 +2,10 @@ const TokenType = {
   INVALID: 0,
   OPEN_TAG: 1,
   CLOSE_TAG: 2,
-  CONTENT: 3,
-  END: 4,
+  STRING: 3,
+  EQUALS: 4,
+  QUOTE: 5,
+  END: 6,
 };
 
 function Token(type, value) {
@@ -41,12 +43,29 @@ function createLexer(input) {
   return lexer;
 }
 
+function isValidCharacter(letter) {
+  invalid = ["\t", "\n", "\f", " ", "\\", "/", ">", '"', "'", "="];
+  return !invalid.includes(letter);
+}
+
+function readIdentifier(lexer) {
+  startPosition = lexer.next;
+  while (isValidCharacter(lexer.char)) {
+    readChar(lexer);
+  }
+  return lexer.input.slice(startPosition, lexer.next);
+}
+
 function nextToken(lexer) {
   const tok = Token(0, 0);
   switch (lexer.char) {
     case "<":
+      tok.type = OPEN_TAG;
+      tok.value = "<";
       break;
     case "/":
+      break;
+    case '"':
       break;
     case 0:
       tok.type = TokenType.END;
